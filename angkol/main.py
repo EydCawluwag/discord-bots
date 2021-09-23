@@ -4,10 +4,12 @@ import requests
 import json
 import dotenv
 import random
-
+from help import helps
+from functions import driver
 
 client = discord.Client()
 dotenv.load_dotenv()
+trig = '?sin ?cos ?tan ?sec ?cosec ?cot'.split(' ')
 
 @client.event
 async def on_ready():
@@ -17,13 +19,15 @@ async def on_ready():
 @client.event
 async def on_message(message):
   if message.author == client.user: return
-
-  if message.content.startswith('angkol help'):
-    await message.channel.send('''
-          Oh! Unsa may matabang nako?\nKabalo ko mo Trigonometry:\n   basic:\n    `?sin opposite hypotenuse`, `?cos adjacent hypotenuse`, `?tan opposite adjacent`,\n    `?sec hypotenuse adjacent`, `?cosec hypotenuse opposite`, `?cot adjacent opposite`
-    '''+'\n   Reciprocal Identities: `angkol help reciprocal identities`\n   Trigonometry Table: `angkol trig table`\n   Periodicity Identities (in Radians): `angkol periodicity id r`\n   Periodicity Identities (in Degrees): `angkol periodicity id d`'+
-    '\n   Co-function Identities (in Degrees): `angkol co func id d`,\n   Co-function Identities (in Radians): `angkol co func id r`\n   Sum & Difference Identities: `angkol sum diff id`\n   Double Angle Identities: `angkol dob ang id`\n   Triple Angle Identities: `angkol trip ang id`\n   Half Angle Identities: `angkol half ang id`\n   Product identities: `angkol prod id`\n   Sum to Product Identities: `sumtoprod id`\n   Inverse Trigonometry Formulas: `inv trig formulas`'
-    )
+  msg=message.content.split(' ')
+  # print(msg)
+  if 'help' in msg and 'angkol' in msg:
+    if len(msg)==2: 
+      await message.channel.send('ang commands sa trigonometry kay naa diri: `angkol help trig`')
+    elif msg[2]=='trig': 
+      await message.channel.send(helps.trigonometry()) 
+  if msg[0].startswith('?') and msg[0] in trig:
+    await message.channel.send('```'+str(driver(msg))+' '+ msg[1]+'/'+msg[2]+'```')
   
   
 
